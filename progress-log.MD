@@ -29,4 +29,25 @@
 
 ## Week 2 (Aug 12 - Aug 18)
 
-_(To be filled as you progress)_
+### Goals:
+- Created `User` model in `models/user.js`
+- Added `auth.js` routes: **register**, **login**, **me**
+- Implemented JWT authentication with `verifyToken.js` middleware
+- Connected routes to `app.js` and tested using VS Code REST Client
+- Successfully registered a user, logged in, and accessed a protected route
+
+### Challenges:
+- Case sensitivity in `routes` folder caused import errors on Windows
+- First time handling password hashing and JWT signing
+- Handling 401 errors from invalid/expired tokens
+
+### Lessons Learned:
+- Importance of consistent folder/file naming (case-sensitive imports)
+- How to hash passwords with bcrypt
+- How to create and verify JWT tokens for user sessions
+
+### Next Steps:
+- Implement Products model and CRUD routes
+- Add Carts and Orders (protected routes)
+- Set up token reuse in VS Code REST Client for faster testing
+- Begin Dockerizing Node.js app alongside MongoDB

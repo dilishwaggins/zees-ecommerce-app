@@ -1,0 +1,22 @@
+### Register a user
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{
+  "name": "Zee",
+  "email": "zee@example.com",
+  "password": "secret123"
+}
+
+### Login
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+  "email": "zee@example.com",
+  "password": "secret123"
+}
+
+### Get profile (replace <TOKEN> with real JWT from login)
+GET http://localhost:5000/api/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODllZjE3ZjMyNzkxOGMwMGQxZjRhZTciLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzU1MjQ3MDUxLCJleHAiOjE3NTUzMzM0NTF9.wVVKZrF8eQheFnAl3UmsrdLY1l76IMnEGjnx60RGGn4
