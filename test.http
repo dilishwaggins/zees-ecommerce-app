@@ -60,6 +60,6 @@ Authorization: Bearer <ADMIN_TOKEN>
   "stock": 30
 }
 
-### 7️⃣ Delete Product (Admin only)
+### Delete Product (Admin only)
 DELETE http://localhost:5000/api/products/<PRODUCT_ID>
 Authorization: Bearer <ADMIN_TOKEN>
