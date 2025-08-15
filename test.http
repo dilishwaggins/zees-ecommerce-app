@@ -1,22 +1,65 @@
+#############################################
+### AUTH TESTS
 ### Register a user
 POST http://localhost:5000/api/register
 Content-Type: application/json
 
 {
-  "name": "Zee",
-  "email": "zee@example.com",
-  "password": "secret123"
+  "name": "Admin Zee",
+  "email": "admin@example.com",
+  "password": "secret123",
+  "isAdmin": true
 }
+
 
 ### Login
 POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
-  "email": "zee@example.com",
+  "email": "admin@example.com",
   "password": "secret123"
 }
 
 ### Get profile (replace <TOKEN> with real JWT from login)
 GET http://localhost:5000/api/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODllZjE3ZjMyNzkxOGMwMGQxZjRhZTciLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzU1MjQ3MDUxLCJleHAiOjE3NTUzMzM0NTF9.wVVKZrF8eQheFnAl3UmsrdLY1l76IMnEGjnx60RGGn4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODlmMTBhYzMyNzkxOGMwMGQxZjRhZjAiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NTUyNTY1NDUsImV4cCI6MTc1NTM0Mjk0NX0.VVXSp5DGbTN8ShMZo1qC13eqD6yJxKCsO8LTWoAiVpU
+
+
+#############################################
+### PRODUCTS API TESTS
+
+### Create Product (Admin only)
+POST http://localhost:5000/api/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODlmMTBhYzMyNzkxOGMwMGQxZjRhZjAiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NTUyNTY0NTcsImV4cCI6MTc1NTM0Mjg1N30.aAnmYp7U4F4rgD3CP_TAP1756Qn952a_XJtmPhSKTtI
+
+{
+  "name": "Sample Product",
+  "description": "This is a test product",
+  "price": 19.99,
+  "category": "Electronics",
+  "stock": 50,
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+### Get All Products (Public)
+GET http://localhost:5000/api/products
+
+### Get Single Product by ID (Public)
+GET http://localhost:5000/api/products/<PRODUCT_ID>
+
+### Update Product (Admin only)
+PUT http://localhost:5000/api/products/<PRODUCT_ID>
+Content-Type: application/json
+Authorization: Bearer <ADMIN_TOKEN>
+
+{
+  "name": "Updated Product Name",
+  "price": 29.99,
+  "stock": 30
+}
+
+### 7️⃣ Delete Product (Admin only)
+DELETE http://localhost:5000/api/products/<PRODUCT_ID>
+Authorization: Bearer <ADMIN_TOKEN>

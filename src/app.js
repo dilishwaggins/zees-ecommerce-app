@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
 const authRoutes = require('./routes/auth');
 app.use('/api', authRoutes);
 
+const productRoutes = require('./routes/product');
+app.use('/api', productRoutes);
+
+
 // Start server
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
