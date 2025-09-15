@@ -32,7 +32,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODlmMTBhY
 ### Create Product (Admin only)
 POST http://localhost:5000/api/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODlmMTBhYzMyNzkxOGMwMGQxZjRhZjAiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NTUyNTY0NTcsImV4cCI6MTc1NTM0Mjg1N30.aAnmYp7U4F4rgD3CP_TAP1756Qn952a_XJtmPhSKTtI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODlmMTBhYzMyNzkxOGMwMGQxZjRhZjAiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NTU1MTU5NDQsImV4cCI6MTc1NTYwMjM0NH0.4sxvWyZ61ciH6-6Ma98H8ruuWPnmQB8cFjA9_Andvv0
 
 {
   "name": "Sample Product",
