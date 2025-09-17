@@ -69,6 +69,24 @@
 
 - Successfully served static frontend with Express and verified API integration
 
+- Implemented Product model and routes (CRUD with admin-only protection)
+
+- Implemented Cart model and routes (add, remove, view items)
+
+- Implemented Order model and routes (checkout, view orders)
+
+- Added seed.js script to populate MongoDB with 6 sample products
+
+- Built a simple frontend with index.html and app.js
+
+- Connected frontend to backend APIs for register, login, products, cart, and checkout
+
+- Added auth.html page for split login/register forms
+
+- Products now display for all users, logged in or not
+
+- Cart and checkout functionality require login
+
 ### Challenges:
 
 - Debugging frontend static file serving (express.static and path issues)
@@ -79,6 +97,14 @@
 
 - Resolving Cannot GET /index.html and ensuring index loads properly
 
+- CORS and static file serving issues delayed frontend testing
+
+- Fixing incorrect route mounts (/api/products vs /api/product)
+
+- Debugging frontend fetch calls returning HTML instead of JSON
+
+- Making products visible to both logged-in and guest users
+
 ### Lessons Learned:
 
 - Correct setup for serving static frontend with Express
@@ -88,6 +114,14 @@
 - How frontend communicates with backend via fetch and Authorization headers
 
 - Testing full workflow: Register → Login → Add Products → Add to Cart → Checkout
+
+- Importance of serving static files correctly with Express
+
+- How to seed databases with starter data
+
+- Difference between protected and public routes in e-commerce apps
+
+- Improved debugging skills with browser dev tools and console logs
 
 ### Next Steps:
 
