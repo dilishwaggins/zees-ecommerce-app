@@ -63,3 +63,38 @@ Authorization: Bearer <ADMIN_TOKEN>
 ### Delete Product (Admin only)
 DELETE http://localhost:5000/api/products/<PRODUCT_ID>
 Authorization: Bearer <ADMIN_TOKEN>
+
+
+#############################################
+### CART API TESTS
+
+### Get user cart
+GET http://localhost:5000/api/cart
+Authorization: Bearer <USER_TOKEN>
+
+### Add item to cart
+POST http://localhost:5000/api/cart/add
+Content-Type: application/json
+Authorization: Bearer <USER_TOKEN>
+
+{
+  "productId": "<PRODUCT_ID>",
+  "quantity": 2
+}
+
+### Remove item from cart (by productId)
+DELETE http://localhost:5000/api/cart/remove/<PRODUCT_ID>
+Authorization: Bearer <USER_TOKEN>
+
+
+
+#############################################
+### ORDER API TESTS
+
+### Checkout (creates new order from current cart)
+POST http://localhost:5000/api/orders/checkout
+Authorization: Bearer <USER_TOKEN>
+
+### Get all orders for the logged-in user
+GET http://localhost:5000/api/orders
+Authorization: Bearer <USER_TOKEN>
