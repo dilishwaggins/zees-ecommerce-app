@@ -51,3 +51,50 @@
 - Add Carts and Orders (protected routes)
 - Set up token reuse in VS Code REST Client for faster testing
 - Begin Dockerizing Node.js app alongside MongoDB
+
+
+## Week 3 (Aug 19 - Aug 25)
+
+### Goals:
+
+- Implemented Product model and full CRUD routes (create, read, update, delete)
+
+- Built Cart routes with add/remove items functionality
+
+- Added Order routes with checkout (cart to order + total price calculation)
+
+- Connected frontend (public/index.html + public/app.js) with backend APIs
+
+- Implemented Register, Login, Add to Cart, View Cart, and Checkout buttons in frontend
+
+- Successfully served static frontend with Express and verified API integration
+
+### Challenges:
+
+- Debugging frontend static file serving (express.static and path issues)
+
+- Mismatched ports (5000 for backend vs. 5500 for Live Server in VS Code)
+
+- Handling JWT in frontend fetch headers
+
+- Resolving Cannot GET /index.html and ensuring index loads properly
+
+### Lessons Learned:
+
+- Correct setup for serving static frontend with Express
+
+- Importance of checking browser Network tab for missing/404 assets
+
+- How frontend communicates with backend via fetch and Authorization headers
+
+- Testing full workflow: Register → Login → Add Products → Add to Cart → Checkout
+
+### Next Steps:
+
+- Polish frontend UI (better layout and product listing design)
+
+- Add error handling + user feedback (e.g., login fail, product stock checks)
+
+- Write Dockerfile for Node.js app and test multi-container setup with MongoDB
+
+- Start planning CI/CD with GitHub Actions
