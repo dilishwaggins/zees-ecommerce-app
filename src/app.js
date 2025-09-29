@@ -13,11 +13,14 @@ app.use(cors());
 app.use(express.json());
 
 // 3. MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
+// Decide which Mongo URI to use (Docker vs Local)
+const mongoUri = process.env.MONGO_URI || process.env.MONGO_URI_LOCAL;
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
-  console.log("✅ Connected to MongoDB");
+  console.log(`✅ Connected to MongoDB at ${mongoUri}`);
 }).catch((err) => {
   console.error("❌ MongoDB connection error:", err);
 });
