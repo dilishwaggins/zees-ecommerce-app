@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    container_name: zees-app
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongo:27017/zeesdb
+      - JWT_SECRET=sup3rS3cr3tT0kenKey123!
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+    command: sh -c "npm install && node src/seed.js && npm start"
+
+  mongo:
+    image: mongo:6
+    container_name: zee-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
