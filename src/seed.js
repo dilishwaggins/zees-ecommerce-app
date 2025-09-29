@@ -1,6 +1,7 @@
-require("dotenv").config();
+require("dotenv").config({ path: __dirname + "/../.env" });
 const mongoose = require("mongoose");
 const Product = require("./models/Product");
+console.log("MONGO_URI from env:", process.env.MONGO_URI);
 
 const products = [
   {
