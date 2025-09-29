@@ -41,4 +41,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: yourusername/zees-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
