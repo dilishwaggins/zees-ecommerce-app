@@ -11,10 +11,10 @@ docker-compose.override.yml
 
 # Terraform
 .terraform/
-terraform.tfstate
-terraform.tfstate.backup
-*.tfplan
-*.tfvars
+terraform/.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
 
 # Large binaries
 *.exe
