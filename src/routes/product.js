@@ -1,8 +1,26 @@
 const express = require('express');
 const Product = require('../models/Product');
+const upload = require("../utils/s3");
 const verifyToken = require('../middleware/verifyToken');
 
 const router = express.Router();
+
+// Upload new product with image
+router.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    const newProduct = new Product({
+      name: req.body.name,
+      price: req.body.price,
+      description: req.body.description,
+      imageUrl: req.file.location, // S3 file URL
+    });
+
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
+    res.status(500).json({ error: "Error uploading product" });
+  }
+});
 
 // Middleware to check admin role
 function verifyAdmin(req, res, next) {
