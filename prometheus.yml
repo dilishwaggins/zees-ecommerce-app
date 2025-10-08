@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  # Monitor Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  # Monitor Node Exporter (EC2 metrics)
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Monitor your Node.js app (custom metrics endpoint)
+  - job_name: 'zees-app'
+    static_configs:
+      - targets: ['app:5000']
