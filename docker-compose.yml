@@ -1,4 +1,7 @@
+version: '3.8'
+
 services:
+  # Your Node.js app
   app:
     build: .
     container_name: zees-app
@@ -12,15 +15,53 @@ services:
       - mongo
     volumes:
       - .:/usr/src/app
-    command: sh -c "npm install && node src/seed.js && npm start"
+    command: sh -c "npm install && npm start"
+    labels:
+      - "prometheus-job=zees-app"
 
+  # MongoDB
   mongo:
     image: mongo:6
-    container_name: zee-mongo
+    container_name: zees-mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
+  # Node Exporter (to monitor EC2/system metrics)
+  node_exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    restart: always
+
+  # Prometheus (collects metrics)
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - node_exporter
+      - app
+
+  # Grafana (visualizes metrics)
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
 volumes:
   mongo_data:
+  grafana_data:

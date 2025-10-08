@@ -1,40 +1,31 @@
-# Simple Dockerfile for your Node.js app
-# This builds ONLY your web application
-
 FROM node:18-alpine
 
-# Install curl for health checks and security updates
+# Security & health tools
 RUN apk update && apk upgrade && apk add --no-cache curl
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Copy package files first (for better Docker caching)
+# copy package files first for cache
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --production && npm cache clean --force
+# install production deps
+RUN npm ci --production && npm cache clean --force
 
-# Copy your application code
+# copy app code
 COPY . .
 
-# Create a non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 -G nodejs && \
-    chown -R nodejs:nodejs /usr/src/app
+# ensure non-root user
+RUN addgroup -g 1001 -S nodejs \
+ && adduser -S nodejs -u 1001 -G nodejs \
+ && chown -R nodejs:nodejs /usr/src/app
 
-# Switch to non-root user
 USER nodejs
 
-# Expose the port your app runs on
 EXPOSE 5000
 
-# Add environment variable so app.js knows it's running in Docker
-ENV DOCKER=true
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD curl -f http://localhost:5000/health || exit 1
 
-# Add health check so Docker can monitor your app
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=40s \
-    CMD curl -f http://localhost:5000/health || exit 1
 
 # Start your application
 CMD ["node", "src/app.js"]
