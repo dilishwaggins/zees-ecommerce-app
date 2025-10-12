@@ -8,6 +8,15 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({
+  storage: multerS3({
+    s3,
+    bucket: process.env.S3_BUCKET,
+    acl: "public-read",
+    key: function (req, file, cb) {
+      cb(null, `products/${Date.now()}_${file.originalname}`);
+    },
+  }),
+});
 
 module.exports = upload;
