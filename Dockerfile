@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies as root (avoids EACCES)
-RUN npm install && npm cache clean --force
+RUN npm ci --production
 
 # Copy rest of the app
 COPY . .
