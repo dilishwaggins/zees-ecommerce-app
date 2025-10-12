@@ -43,15 +43,16 @@ A full-stack e-commerce web application built with **Node.js**, **Express**, **M
 ```bash
 git clone <your-repo-url>
 cd zees-ecommerce-app
-Install dependencies:
+```
 
-bash
-Copy code
+### 2. Install dependencies:
+
+```bash
 npm ci
-Create a .env.local file in the project root:
+```
 
-env
-Copy code
+### 3. Create a .env.local file in the project root:
+```bash
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/zeesdb
 JWT_SECRET=sup3rS3cr3tT0kenKey123!
@@ -60,25 +61,28 @@ AWS_ACCESS_KEY_ID=YOUR_LOCAL_AWS_KEY
 AWS_SECRET_ACCESS_KEY=YOUR_LOCAL_AWS_SECRET
 AWS_REGION=us-east-1
 AWS_BUCKET_NAME=dillishwaggins-zees-app-bucket
-Seed the database:
+```
 
-bash
-Copy code
+### 4. Seed the database:
+
+```bash
 npm run seed:local
-Start the app:
+```
 
-bash
-Copy code
+### 5.Start the app:
+
+```bash
 npm run dev
-Open your browser at http://localhost:5000
+``` 
+
+### 6.Open your browser at http://localhost:5000
 
 ---
 
 ### 2️⃣ Docker / EC2 Deployment
-Make sure your .env.docker exists in the project root:
+### 1. Make sure your .env.docker exists in the project root:
 
-env
-Copy code
+```bash
 PORT=5000
 MONGO_URI=mongodb://zees-mongo:27017/zeesdb
 JWT_SECRET=sup3rS3cr3tT0kenKey123!
@@ -87,56 +91,60 @@ AWS_ACCESS_KEY_ID=YOUR_AWS_KEY
 AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET
 AWS_REGION=us-east-1
 AWS_BUCKET_NAME=dillishwaggins-zees-app-bucket
-Build the Docker image:
+``` 
+### 2.Build the Docker image:
 
-bash
-Copy code
+```bash
 docker build -t zees-app:latest .
-Run the Docker container:
+```
 
-bash
-Copy code
+### 3.Run the Docker container:
+
+```bash
 docker run -d \
   --name zees-app \
   -p 5000:5000 \
   --env-file .env.docker \
   zees-app:latest
-Seed the database inside Docker:
+  ```
 
-bash
-Copy code
+### 4.Seed the database inside Docker:
+
+```bash
 docker exec -it zees-app sh
 node src/seed.js
 exit
-Visit your EC2 public IP:
+```
 
-cpp
-Copy code
+### 5.Visit your EC2 public IP:
+
+```cpp
 http://<EC2_PUBLIC_IP>:5000
+```
+
 
 ---
 
 ### 3️⃣ Environment Management
-.env.local → Local development
+- .env.local → Local development
 
-.env.docker → Docker/EC2 deployment
+- .env.docker → Docker/EC2 deployment
 
-Keep .env* files in .gitignore to protect sensitive keys.
+- Keep .env* files in .gitignore to protect sensitive keys.
 
 ---
 
 ### 4️⃣ Troubleshooting
-Cannot find module 'multer' → Ensure npm ci is run before building Docker images.
+- Cannot find module 'multer' → Ensure npm ci is run before building Docker images.
 
-getaddrinfo ENOTFOUND zees-mongo → Use correct MongoDB URI for local vs Docker.
+- getaddrinfo ENOTFOUND zees-mongo → Use correct MongoDB URI for local vs Docker.
 
-Products not showing → Re-run the seed script for your environment.
+- Products not showing → Re-run the seed script for your environment.
 
 ---
 
 ### 5️⃣ Project Structure
-php
-Copy code
+```php
 zees-ecommerce-app/
 │
 ├─ src/
@@ -153,6 +161,8 @@ zees-ecommerce-app/
 ├─ .env.local
 ├─ .env.docker
 └─ README.md
+```
+
 ---
 
 ### 6️⃣ Authors / Contributors
