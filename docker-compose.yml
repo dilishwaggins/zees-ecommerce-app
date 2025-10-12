@@ -13,9 +13,6 @@ services:
       - JWT_SECRET=sup3rS3cr3tT0kenKey123!
     depends_on:
       - mongo
-    volumes:
-      - .:/usr/src/app
-    command: sh -c "npm install && npm start"
     labels:
       - "prometheus-job=zees-app"
 
