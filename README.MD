@@ -1,137 +1,158 @@
-🛍️ Zees E-Commerce Web App
-Full Stack + DevOps + Monitoring Project
+Zee's E-Commerce App 
 
-Zees-App is a containerized e-commerce web application with authentication, products, orders, and integrated DevOps tooling — featuring CI/CD, Docker, MongoDB, Prometheus, and Grafana for end-to-end observability.
+A full-stack e-commerce web application built with Node.js, Express, MongoDB, and AWS S3 for product storage. Designed to run both locally and on Docker/EC2, with environment-specific configuration.
 
-🚀 Features
+Features
 
-🧩 Node.js + Express backend
+Browse and view products
 
-🗃️ MongoDB database
+Upload product images to AWS S3
 
-🔐 JWT authentication
+JWT-based authentication
 
-📦 Dockerized services with docker-compose
+MongoDB database integration
 
-🧠 Prometheus & Grafana monitoring for app and server
+Seed script to populate products
 
-⚙️ GitHub Actions CI/CD — builds, tests, scans (Trivy), and pushes to DockerHub
+Runs locally or in Docker containers
 
-☁️ Deployed on AWS EC2 with persistent Mongo volume
+Tech Stack
 
-🧰 Tech Stack
-Category	Tools Used
-Backend	Node.js, Express, MongoDB
-Security	JWT Auth
-DevOps	Docker, Docker Compose, GitHub Actions, Trivy
-Monitoring	Prometheus, Grafana
-Cloud	AWS EC2 (Amazon Linux 2023)
-🐳 Docker Setup
-🧩 Run locally
-docker-compose up --build -d
+Backend: Node.js, Express
 
-📂 Services
-Service	Port	Description
-zees-app	5000	Node.js backend
-mongo	27017	MongoDB database
-prometheus	9090	Metrics collector
-grafana	3000	Dashboard visualization
-📊 Metrics Endpoints
+Database: MongoDB
 
-App Metrics → http://localhost:5000/metrics
+File Storage: AWS S3
 
-Health Check → http://localhost:5000/health
+Containerization: Docker
 
-⚙️ CI/CD Pipeline
+Dev Tools: dotenv, multer, multer-s3
 
-The GitHub Actions workflow:
+Getting Started
+Prerequisites
 
-Builds and tests Node.js app
+Node.js >= 18
 
-Runs Trivy security scan
+MongoDB (local or Docker)
 
-Builds Docker image
+AWS account with S3 bucket
 
-Pushes to DockerHub
+Docker (for containerized deployment)
 
-name: CI/CD Pipeline
+1️⃣ Local Development
 
-on:
-  push:
-    branches: [ "main" ]
+Clone the repository:
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test || echo "No tests found, skipping..."
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
-          format: 'table'
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
-
-☁️ Deployment on AWS EC2
-
-Launch Amazon Linux 2023 EC2 instance
-
-Install Docker and Docker Compose
-
-Clone the repo:
-
-git clone https://github.com/<your-username>/zees-app.git
-cd zees-app
+git clone <your-repo-url>
+cd zees-ecommerce-app
 
 
-Run:
+Install dependencies:
 
-docker-compose up -d
+npm ci
 
 
-Visit:
+Create a .env.local file in the project root:
 
-App → http://<EC2-IP>:5000
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/zeesdb
+JWT_SECRET=sup3rS3cr3tT0kenKey123!
 
-Grafana → http://<EC2-IP>:3000
+AWS_ACCESS_KEY_ID=YOUR_LOCAL_AWS_KEY
+AWS_SECRET_ACCESS_KEY=YOUR_LOCAL_AWS_SECRET
+AWS_REGION=us-east-1
+AWS_BUCKET_NAME=dillishwaggins-zees-app-bucket
 
-Prometheus → http://<EC2-IP>:9090
 
-📈 Monitoring Dashboard
+Seed the database:
 
-Grafana panels include:
+npm run seed:local
 
-HTTP Requests per second
 
-Response time histogram
+Start the app:
 
-Memory and CPU usage per container
+npm run dev
 
-MongoDB health and uptime
 
-App availability from /health
+Open your browser at http://localhost:5000
+
+2️⃣ Docker / EC2 Deployment
+
+Make sure your .env.docker exists in the project root:
+
+PORT=5000
+MONGO_URI=mongodb://zees-mongo:27017/zeesdb
+JWT_SECRET=sup3rS3cr3tT0kenKey123!
+
+AWS_ACCESS_KEY_ID=YOUR_AWS_KEY
+AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET
+AWS_REGION=us-east-1
+AWS_BUCKET_NAME=dillishwaggins-zees-app-bucket
+
+
+Build the Docker image:
+
+docker build -t zees-app:latest .
+
+
+Run the Docker container:
+
+docker run -d \
+  --name zees-app \
+  -p 5000:5000 \
+  --env-file .env.docker \
+  zees-app:latest
+
+
+Seed the database inside Docker:
+
+docker exec -it zees-app sh
+node src/seed.js
+exit
+
+
+Visit your EC2 public IP:
+
+http://<EC2_PUBLIC_IP>:5000
+
+3️⃣ Environment Management
+
+.env.local → Local development
+
+.env.docker → Docker/EC2 deployment
+
+Keep .env* files in .gitignore to protect sensitive keys.
+
+4️⃣ Troubleshooting
+
+Cannot find module 'multer' → Ensure npm ci is run before building Docker images.
+
+getaddrinfo ENOTFOUND zees-mongo → Use correct MongoDB URI for local vs Docker.
+
+Products not showing → Re-run the seed script for your environment.
+
+5️⃣ Project Structure
+zees-ecommerce-app/
+│
+├─ src/
+│   ├─ routes/       # API routes
+│   ├─ utils/        # AWS S3 and other helpers
+│   ├─ seed.js       # Script to seed MongoDB
+│   └─ app.js        # Entry point
+│
+├─ public/           # Static assets
+├─ node_modules/
+├─ package.json
+├─ Dockerfile
+├─ docker-compose.yml
+├─ .env.local
+├─ .env.docker
+└─ README.md
+
+6️⃣ Authors / Contributors
+
+Joy Zawadi – Lead Developer & Designer
+
+7️⃣ License
+
+MIT License
