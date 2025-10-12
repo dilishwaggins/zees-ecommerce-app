@@ -9,7 +9,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # install production deps
-RUN npm ci --production && npm cache clean --force
+RUN npm install && npm cache clean --force
+
 
 # copy app code
 COPY . .
