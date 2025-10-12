@@ -1,25 +1,26 @@
 FROM node:18-alpine
 
-# Security & health tools
-RUN apk update && apk upgrade && apk add --no-cache curl
+# Install curl for health checks
+RUN apk update && apk add --no-cache curl
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files first for better build caching
+# Copy package.json and package-lock.json first
 COPY package*.json ./
 
-# Install all dependencies (including dev)
+# Install dependencies as root (avoids EACCES)
 RUN npm install && npm cache clean --force
 
-# Copy the rest of the app
+# Copy rest of the app
 COPY . .
 
-# Add a non-root user for security
+# Make sure all files are accessible to non-root user
 RUN addgroup -g 1001 -S nodejs \
  && adduser -S nodejs -u 1001 -G nodejs \
  && chown -R nodejs:nodejs /usr/src/app
 
+# Switch to non-root user
 USER nodejs
 
 # Expose app port
