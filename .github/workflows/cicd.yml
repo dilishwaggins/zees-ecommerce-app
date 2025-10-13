@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -56,38 +56,49 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
 
-      # Step 9: Push Docker image
+      # Step 9: Push Docker image to DockerHub
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
 
-      # Step 10: Deploy to EC2
+      # Step 10: Deploy to EC2 via SSH
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "🔄 Deploying latest version to EC2..."
+            echo "🚀 Starting deployment on EC2..."
 
-            # Stop and remove old container (if any)
-            docker stop zees-web || true
-            docker rm zees-web || true
+            # Install Docker Compose if missing
+            if ! command -v docker-compose &> /dev/null; then
+              echo "🧩 Installing Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
 
-            # Pull latest image
+            # Clone or update the repo
+            cd ~
+            if [ ! -d "zees-ecommerce-app" ]; then
+              echo "📦 Cloning repo for the first time..."
+              git clone https://github.com/dilishwaggins/zees-ecommerce-app.git
+            fi
+
+            cd zees-ecommerce-app
+            git pull origin main
+
+            # Stop and remove old containers
+            docker compose down || true
+
+            # Optional cleanup
+            docker system prune -af || true
+
+            # Pull latest image from DockerHub
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
 
-            # Restart MongoDB if not running
-            docker ps | grep mongo || docker run -d --name mongo -p 27017:27017 mongo:6
-
-            # Run the new app container
-            docker run -d --name zees-web -p 5000:5000 \
-              -e PORT=5000 \
-              -e MONGO_URI=mongodb://mongo:27017/zeesdb \
-              -e JWT_SECRET=sup3rS3cr3tT0kenKey123! \
-              --link mongo:mongo \
-              ${{ secrets.DOCKERHUB_USERNAME }}/zees-app:latest
+            # Start the stack
+            echo "🧠 Starting full stack with Docker Compose..."
+            docker compose up -d --build
 
             echo "✅ Deployment complete!"
+            docker ps
