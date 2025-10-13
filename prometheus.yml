@@ -15,4 +15,4 @@ scrape_configs:
   # Monitor your Node.js app (custom metrics endpoint)
   - job_name: 'zees-app'
     static_configs:
-      - targets: ['app:5000']
+      - targets: ['zees-app:5000']
