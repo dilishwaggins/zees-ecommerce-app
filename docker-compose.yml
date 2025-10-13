@@ -4,17 +4,12 @@ services:
     container_name: zees-app
     ports:
       - "5000:5000"
-    environment:
-      - PORT=5000
-      - MONGO_URI=mongodb://mongo:27017/zeesdb
-      - JWT_SECRET=sup3rS3cr3tT0kenKey123!
     env_file:
        - .env
-
     depends_on:
       - mongo
     volumes:
-      - .:/usr/src/app      # Mount code
+      - .:/usr/src/app      
     labels:
       - "prometheus-job=zees-app"
 
